@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Main Page{% endblock %}
+
+{% block content %}
+
+<a href="{% url "posts:allblogs" %}">The list of blogs</a>
+<br>
+
+
+The number of blogs: {{ blogs_count }}
+<br>
+The number of posts: {{ posts_count }}
+<br>
+The number of comments: {{ comments_count }}
+{% endblock %}

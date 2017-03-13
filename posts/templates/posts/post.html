@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<h3>Blog: <a href="{% url "posts:oneblog" pk=object.blog.id %}">{{ object.blog.title }}</a></h3> <br>
+<h4>Post title: {{ object.title }}</h4> <br>
+<hr>
+{{ object.text }}
+<hr>
+<br>
+<br>
+<br>
+Comments:<br>
+<hr>
+    {% for com in object.comment_set.all%}
+<div>{{ com.text }}</div> <br><hr>
+    {% endfor%}
+{% endblock %}

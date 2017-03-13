@@ -1,0 +1,11 @@
+{% extends "core/base.html" %}
+
+{% block title %}  TITLE!!! {% endblock %}
+
+{% block content %}
+    <div>Test passed!</div>
+    <div>{{ post_id }}</div>
+    {% for item in arr %}
+    <i>{{forloop.counter}}</i><b>{{ item }}</b><br>
+    {% endfor%}
+{% endblock %}

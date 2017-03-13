@@ -1,0 +1,10 @@
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body>
+    <a href="{% url "home" %}"><h1 align="center">Main Page</h1> </a>
+
+    {% block content %}{% endblock %}
+    </body>
+</html>
