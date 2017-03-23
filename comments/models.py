@@ -6,6 +6,6 @@ from django.conf import settings
 from posts.models import Post
 
 class Comment(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
     text = models.TextField()
-    post = models.ForeignKey(Post, null=True)
+    post = models.ForeignKey(Post)

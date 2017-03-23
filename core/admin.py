@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .models import User
 
-
+'''
 class UserAdmin(BaseUserAdmin):
 
     fieldsets = BaseUserAdmin.fieldsets + (
@@ -17,6 +17,7 @@ class UserAdmin(BaseUserAdmin):
         )
     admin_avatar.allow_tags = True
     admin_avatar.short_description = u'Avaip'
+'''
 
-
-admin.site.register(User, UserAdmin)
+#admin.site.register(User, UserAdmin)
+admin.site.register(User, BaseUserAdmin)
