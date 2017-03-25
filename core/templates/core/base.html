@@ -2,8 +2,31 @@
     <head>
         <title>{% block title %}{% endblock %}</title>
     </head>
-    <body>
-    <a href="{% url "home" %}"><h1 align="center">Main Page</h1> </a>
+
+    {% if user.is_anonymous %}
+        <a href="{% url "core:login" %}">Sign in</html>
+    {% else %}
+        You are {{ user.username }}
+        <a href="{% url "core:logout" %}">Sign out </a>
+    {% endif %}
+    <!--
+    <form method="get" action="{% url "posts:allblogs" %}">
+        <!--
+        <input type="text" name="login">
+        <input type="hidden" name="bla" value="111">
+        <select name="cat" multiple>
+            <option value="bla1">bla1</option>
+            <option value="bla2">bla2</option>
+        </select>
+        <textarea  name="text"></textarea>
+
+        <input type="numver" required>
+        <input type="submit">
+
+    </form>
+    -->
+
+    <a href="{% url "core:home" %}"><h1 align="center">Main Page</h1> </a>
 
     {% block content %}{% endblock %}
     </body>

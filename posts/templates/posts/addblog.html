@@ -1,0 +1,7 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<form method="post" action="{% url "posts:createblog" %}">
+{% csrf_token %}
+{{ form.as_p }}
+<input type="submit">
+{% endblock%}

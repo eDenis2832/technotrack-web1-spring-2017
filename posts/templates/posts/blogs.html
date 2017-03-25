@@ -1,7 +1,23 @@
 {% extends 'core/base.html' %}
+{% load widget_tweaks %}
 
 {% block content %}
+
+<form method="get" action="{% url "posts:allblogs" %}">
+
+{{ sortform.sort|add_class:"myinput"}}
+<br>
+{{ sortform.search|add_class:"myinput"}}
+    <br>
+    <input type="submit">
+</form>
+<br>
+
     {% for blog in object_list %}
-<b>{{ blog.id }}</b><a href="{% url "posts:oneblog" pk=blog.id %}">{{ blog.title }}</a> <br>
-    {% endfor%}
+<b>{{ blog.id }}</b><a href="{% url "posts:oneblog" pk=blog.id %}">{{ blog.title }}</a>
+{% if blog.author == user%}
+<a href="{% url "posts:editblog" pk=blog.id %}">Edit</a>
+{% endif %}
+<br>
+{% endfor%}
 {% endblock %}
