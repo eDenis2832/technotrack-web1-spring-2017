@@ -4,20 +4,37 @@
 {% block content %}
 
 <form method="get" action="{% url "posts:allblogs" %}">
-
+Ordered by
 {{ sortform.sort|add_class:"myinput"}}
 <br>
 {{ sortform.search|add_class:"myinput"}}
     <br>
-    <input type="submit">
+    <input type="submit" value="Sort">
 </form>
 <br>
 
     {% for blog in object_list %}
-<b>{{ blog.id }}</b><a href="{% url "posts:oneblog" pk=blog.id %}">{{ blog.title }}</a>
-{% if blog.author == user%}
-<a href="{% url "posts:editblog" pk=blog.id %}">Edit</a>
-{% endif %}
-<br>
-{% endfor%}
+        <a href="{% url "posts:oneblog" pk=blog.id %}">{{ blog.title }}</a>
+
+        Rate: {{ blog.rate }}
+
+
+
+        {% if blog.categories.all %}
+        Categories:
+            {% for c in blog.categories.all %}
+                {{ c.name }}
+            {% endfor %}
+        {% endif %}
+        {% if blog.author == user%}
+        <a href="{% url "posts:editblog" pk=blog.id %}">Edit</a>
+        {% endif %}
+        <br>
+
+    {% endfor%}
+
+    <br><br>
+    <a href="{% url "posts:createblog" %}"> Create blog </a><br>
+    <a href="{% url "posts:createpost" %}"> Create post </a>
+
 {% endblock %}

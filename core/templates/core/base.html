@@ -2,9 +2,12 @@
     <head>
         <title>{% block title %}{% endblock %}</title>
     </head>
+    <body>
+
 
     {% if user.is_anonymous %}
-        <a href="{% url "core:login" %}">Sign in</html>
+    <a href="{% url "core:login" %}">Sign in</a><br>
+    <a href="{% url "core:register" %}">Registration</a><br>
     {% else %}
         You are {{ user.username }}
         <a href="{% url "core:logout" %}">Sign out </a>
@@ -27,7 +30,8 @@
     -->
 
     <a href="{% url "core:home" %}"><h1 align="center">Main Page</h1> </a>
-
+    <a href="{% url "posts:allblogs" %}">The list of blogs</a>
+    <br><br><br><br>
     {% block content %}{% endblock %}
     </body>
 </html>

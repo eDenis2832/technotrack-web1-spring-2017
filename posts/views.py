@@ -13,30 +13,80 @@ class SortForm(forms.Form):
                                       ))
     search = forms.CharField(required=False)
 
+'''
 class BlogForm(forms.ModelForm):
     class Meta:
         model = Blog
         fields = ('title', 'description', 'rate')
+'''
 
+
+class CreateBlog(CreateView):
+    template_name = 'posts/addblog.html'
+    model = Blog
+    fields = ('title', 'description', 'categories')
+    success_url = '/blogs/'
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.rate = 0
+        return super(CreateBlog, self).form_valid(form)
 
 class UpdateBlog(UpdateView):
     template_name = 'posts/editblog.html'
     model = Blog
     fields = ('title', 'description')
     success_url = '/blogs/'
+    def dispatch(self, request, *args, **kwargs):
+        self.success_url += kwargs['pk']
+        return super(UpdateBlog, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         return super(UpdateBlog, self).get_queryset().filter(author=self.request.user)
 
-class CreateBlog(CreateView):
-    template_name = 'posts/addblog.html'
-    model = Blog
-    fields = ('title', 'description')
+
+class CreatePost(CreateView):
+    template_name = 'posts/addpost.html'
+    model = Post
+    fields = ('title', 'blog', 'text')
     success_url = '/blogs/'
     def form_valid(self, form):
         form.instance.author = self.request.user
-        form.instance.rate = 0
-        return super(CreateBlog, self).form_valid(form)
+        form.instance.likes = 0
+        return super(CreatePost, self).form_valid(form)
+
+class UpdatePost(UpdateView):
+    template_name = 'posts/editpost.html'
+    model = Post
+    fields = ('title', 'text')
+    success_url = '/blogs/posts/'
+    def dispatch(self, request, *args, **kwargs):
+        self.success_url += kwargs['pk']
+        return super(UpdatePost, self).dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return super(UpdatePost, self).get_queryset().filter(author=self.request.user)
+
+class CreateComment(CreateView):
+    template_name = "posts/post.html"
+    model = Comment
+    fields = ('text', )
+    postob=None
+    success_url = '/blogs/posts/'
+    def dispatch(self, request, *args, **kwargs):
+        self.postob = get_object_or_404(Post, id=kwargs['pk'])
+        self.success_url += kwargs['pk']
+        return super(CreateComment, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateComment, self).get_context_data(**kwargs)
+        context['post'] = self.postob
+        return context
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.post = self.postob
+        return super(CreateComment, self).form_valid(form)
+
 
 '''
 def createblog(request):

@@ -2,17 +2,28 @@
 
 {% block content %}
 
-<h3>Blog: <a href="{% url "posts:oneblog" pk=object.blog.id %}">{{ object.blog.title }}</a></h3> <br>
-<h4>Post title: {{ object.title }}</h4> <br>
+<h3>Blog: <a href="{% url "posts:oneblog" pk=post.blog.id %}">{{ post.blog.title }}</a></h3> <br>
+<h4>Post title: {{ post.title }}</h4> <br>
+Likes:{{ post.likes}}<br>
 <hr>
-{{ object.text }}
+{{ post.text }}
 <hr>
 <br>
 <br>
 <br>
 Comments:<br>
 <hr>
-    {% for com in object.comment_set.all%}
+    {% for com in post.comment_set.all%}
 <div>{{ com.text }}</div> <br><hr>
     {% endfor%}
+
+<form method="post" action="{% url "posts:createcomment" pk=post.blog.id %}">
+{% csrf_token %}
+{{ form }}
+<br>
+
+<input type="submit">
+</form>
 {% endblock %}
+
+
