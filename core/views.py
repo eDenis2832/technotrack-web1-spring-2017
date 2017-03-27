@@ -36,8 +36,7 @@ def register(request):
         if form.is_valid():
             user = User(username=form.cleaned_data['username'])
             user.set_password(form.cleaned_data['password1'])
-            user.save()  #this way in not working, why ???
-            #form.save(commit=True)
+            user.save()
             return redirect("/")
     return render(request, 'core/register.html', {'form': form})
 

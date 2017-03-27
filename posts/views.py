@@ -43,7 +43,6 @@ class UpdateBlog(UpdateView):
     def get_queryset(self):
         return super(UpdateBlog, self).get_queryset().filter(author=self.request.user)
 
-
 class CreatePost(CreateView):
     template_name = 'posts/addpost.html'
     model = Post
@@ -51,7 +50,6 @@ class CreatePost(CreateView):
     success_url = '/blogs/'
     def form_valid(self, form):
         form.instance.author = self.request.user
-        form.instance.likes = 0
         return super(CreatePost, self).form_valid(form)
 
 class UpdatePost(UpdateView):
