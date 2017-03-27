@@ -60,12 +60,12 @@ class CreatePost(CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super(CreatePost, self).form_valid(form)
-'''
-    def get_form(self, form_class):
-        form = super(CreatePost, self).get_form(self, from_class=form_class)
+
+    def get_form(self, form_class=None):
+        form = super(CreatePost, self).get_form()
         form.fields["blog"].queryset = form.fields["blog"].queryset.filter(author=self.request.user)
         return form
-'''
+
     #def get_form(self, form_class=None):
     #    self.fields["blog"].queryset = self.fields["blog"].queryset.filter(author=self.request.user)
      #   return super(CreatePost, self).get_form()
