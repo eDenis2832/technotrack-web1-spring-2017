@@ -30,7 +30,8 @@ Ordered by
         <a href="{% url "posts:editblog" pk=blog.id %}">Edit</a>
         {% endif %}
         <br>
-
+        {{ blog.description }}
+        <br>
     {% endfor%}
 
     <br><br>

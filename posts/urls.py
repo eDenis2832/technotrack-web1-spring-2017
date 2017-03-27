@@ -1,5 +1,5 @@
 from django.conf.urls import url, include
-from .views import BlogsList, BlogView, PostView, CreateBlog, UpdateBlog, CreatePost, UpdatePost, CreateComment
+from .views import BlogsList, BlogView, CreateBlog, UpdateBlog, CreatePost, UpdatePost, CreateComment
 
 from django.contrib.auth.decorators import login_required
 

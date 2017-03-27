@@ -22,5 +22,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^blogs/', include('posts.urls', namespace="posts")),
-    url(r'^', include('core.urls', namespace='core'))
+    url(r'^', include('core.urls', namespace='core')),
 ]
