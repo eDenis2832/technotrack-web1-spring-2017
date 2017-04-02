@@ -1,7 +1,19 @@
 {% extends 'core/base.html' %}
+{% load widget_tweaks %}
 {% block content %}
-<form method="post" action="{% url "core:register" %}">
+<div class="row" xmlns="http://www.w3.org/1999/html">
+    <div class="col-xs-12  col-sm-8 col-md-4 col-lg-4">
+<form role="form" method="post" action="{% url "core:register" %}">
 {% csrf_token %}
-{{ form.as_p }}
-<input type="submit">
+
+
+        <div class="form-group"><label for="id_username">Username</label>{{ form.username|add_class:"form-control" }}</div>
+        <div class="form-group"><label for="id_password1">Password</label>{{ form.password1|add_class:"form-control" }}</div>
+        <div class="form-group"><label for="id_password2">Please, one more time</label>{{ form.password2|add_class:"form-control" }}</div>
+
+
+<input class="btn btn-default" type="submit">
+    </form>
+            </div>
+</div>
 {% endblock%}

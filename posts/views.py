@@ -2,9 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Blog, Post
 from django.views.generic import ListView, DetailView, UpdateView, CreateView
 from comments.models import Comment
-from django.urls import reverse_lazy
-
-
+from django.urls import reverse_lazy, reverse
 
 from django import forms
 
@@ -15,6 +13,7 @@ class SortForm(forms.Form):
                                       ('rate', 'Rate'),
                                       ))
     search = forms.CharField(required=False)
+
 
 '''
 class BlogForm(forms.ModelForm):
@@ -28,26 +27,32 @@ class CreateBlog(CreateView):
     template_name = 'posts/addblog.html'
     model = Blog
     fields = ('title', 'description', 'categories')
+
     def get_success_url(self):
         return reverse_lazy('posts:allblogs')
+
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.instance.rate = 0
         return super(CreateBlog, self).form_valid(form)
+
 
 class UpdateBlog(UpdateView):
     template_name = 'posts/editblog.html'
     model = Blog
     fields = ('title', 'description')
     pk = int
+
     def get_success_url(self):
-        return reverse_lazy('posts:oneblog', kwargs={'pk':self.pk})
+        return reverse_lazy('posts:oneblog', kwargs={'pk': self.pk})
+
     def dispatch(self, request, *args, **kwargs):
         self.pk = kwargs['pk']
         return super(UpdateBlog, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         return super(UpdateBlog, self).get_queryset().filter(author=self.request.user)
+
 
 class CreatePost(CreateView):
     template_name = 'posts/addpost.html'
@@ -66,17 +71,15 @@ class CreatePost(CreateView):
         form.fields["blog"].queryset = form.fields["blog"].queryset.filter(author=self.request.user)
         return form
 
-    #def get_form(self, form_class=None):
-    #    self.fields["blog"].queryset = self.fields["blog"].queryset.filter(author=self.request.user)
-     #   return super(CreatePost, self).get_form()
 
 class UpdatePost(UpdateView):
     template_name = 'posts/editpost.html'
     model = Post
     fields = ('title', 'text')
     pk = int
+
     def get_success_url(self):
-        return reverse_lazy('posts:createcomment', kwargs={'pk':self.pk})
+        return reverse_lazy('posts:createcomment', kwargs={'pk': self.pk})
 
     def dispatch(self, request, *args, **kwargs):
         self.pk = kwargs['pk']
@@ -85,14 +88,17 @@ class UpdatePost(UpdateView):
     def get_queryset(self):
         return super(UpdatePost, self).get_queryset().filter(author=self.request.user)
 
+
 class CreateComment(CreateView):
     template_name = "posts/post.html"
     model = Comment
-    fields = ('text', )
-    postob=None
+    fields = ('text',)
+    postob = None
     pk = int
+
     def get_success_url(self):
-        return reverse_lazy('posts:createcomment', kwargs={'pk':self.pk})
+        return reverse('posts:createcomment', kwargs={'pk': self.pk})
+
     def dispatch(self, request, *args, **kwargs):
         self.postob = get_object_or_404(Post, id=kwargs['pk'])
         self.pk = kwargs['pk']
@@ -112,7 +118,7 @@ class CreateComment(CreateView):
 class BlogsList(ListView):
     queryset = Blog.objects.all()
     template_name = "posts/blogs.html"
-    sortform=None
+    sortform = None
 
     def dispatch(self, request, *args, **kwargs):
         self.sortform = SortForm(self.request.GET)
@@ -123,7 +129,7 @@ class BlogsList(ListView):
         context['sortform'] = self.sortform
         return context
 
-    def get_queryset(self):  #info about objects
+    def get_queryset(self):  # info about objects
         qs = super(BlogsList, self).get_queryset()
         if self.sortform.is_valid():
             qs = qs.order_by(self.sortform.cleaned_data['sort'])
@@ -135,8 +141,6 @@ class BlogsList(ListView):
 class BlogView(DetailView):
     queryset = Blog.objects.all()
     template_name = "posts/blog.html"
-
-
 
 
 '''
@@ -166,9 +170,6 @@ def updateblog(request, pk=None):
     return render(request, 'posts/editblog.html', {'form': form})
 '''
 
-
-
-
 '''
 class PostView(DetailView):
     queryset = Post.objects.all()
@@ -188,5 +189,3 @@ def show_blog(request, blog_id=None):
     posts = Post.objects.filter(blog=blog)
     return render(request, 'posts/blog.html', {'blog': blog, 'posts': posts})
 '''
-
-

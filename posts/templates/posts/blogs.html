@@ -3,39 +3,66 @@
 
 {% block content %}
 
-<form method="get" action="{% url "posts:allblogs" %}">
-Ordered by
-{{ sortform.sort|add_class:"myinput"}}
-<br>
-{{ sortform.search|add_class:"myinput"}}
-    <br>
-    <input type="submit" value="Sort">
-</form>
-<br>
-
-    {% for blog in object_list %}
-        <a href="{% url "posts:oneblog" pk=blog.id %}">{{ blog.title }}</a>
-
-        Rate: {{ blog.rate }}
-
-
-
-        {% if blog.categories.all %}
-        Categories:
-            {% for c in blog.categories.all %}
-                {{ c.name }}
-            {% endfor %}
-        {% endif %}
-        {% if blog.author == user%}
-        <a href="{% url "posts:editblog" pk=blog.id %}">Edit</a>
-        {% endif %}
+    {% if not user.is_anonymous %}
+        <div class="row">
+            <div class="col-xs-12  col-sm-2 col-md-2 col-lg-2">
+                <a class="btn btn-primary" href="{% url "posts:createblog" %}"> Create blog </a>
+            </div>
+            <div class="ccol-xs-12  col-sm-2 col-md-2 col-lg-2">
+                <a class="btn btn-primary" href="{% url "posts:createpost" %}"> Create post </a>
+            </div>
+        </div>
         <br>
-        {{ blog.description }}
-        <br>
-    {% endfor%}
+    {% endif %}
 
+    <form role="form" class="form-inline" method="get" action="{% url "posts:allblogs" %}">
+        <div class="form-group">
+            <label for="id_sort">Ordered by </label> {{ sortform.sort|add_class:"form-control"}}
+        </div>
+
+        <div class="form-group">
+            <label for="id_search">Search for </label>{{ sortform.search|add_class:"form-control"}}
+        </div>
+
+        <input class="btn btn-default" type="submit" value="Sort">
+    </form>
+
+
+<br>
+
+
+    <div class="panel-group">
+        {% for blog in object_list %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a href="{% url "posts:oneblog" pk=blog.id %}">{{ blog.title }}</a>
+                </div>
+                <div class="panel-body">
+                    <div class="row"><div class="text-info">
+                        Rate: {{ blog.rate }}
+                        {% if blog.categories.all %}
+                        <br>
+                        Categories:
+                            {% for c in blog.categories.all %}
+                                {{ c.name }}
+                            {% endfor %}
+                        {% endif %}
+                    </div></div>
+
+
+                    <div class="row">
+                        {{ blog.description }}
+                    </div>
+
+                    <div class="row">
+                        {% if blog.author == user%}
+                        <a class="btn btn-default" href="{% url "posts:editblog" pk=blog.id %}">Edit</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor%}
+    </div>
     <br><br>
-    <a href="{% url "posts:createblog" %}"> Create blog </a><br>
-    <a href="{% url "posts:createpost" %}"> Create post </a>
 
 {% endblock %}

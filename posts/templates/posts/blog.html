@@ -2,33 +2,42 @@
 
 {% block content %}
 
+<div class="panel panel-default">
+    <div class="panel-heading"> <header><h1>{{ object.title }}</h1></header></div>
+    <div class="panel-body">
+    <div class="text-info">
+           Rate  {{ object.rate }}<br>
+        {% if object.categories.all %}
+        Categories:
+            {% for c in blog.categories.all %}
+                {{ c.name }}
+            {% endfor %}
+        {% endif %}
+    </div>
+    <br>
+        <article>
+    {{ object.description }}
+        </article>
 
-<h1> {{ object.title }} </h1><br>
-
-<i>
-{% if object.categories.all %}
-Categories:
-    {% for c in blog.categories.all %}
-        {{ c.name }}
-    {% endfor %}
-{% endif %}
-</i>
-<br>
-
-{{ object.description }} <br>
 
 
-    <h1>Posts</h1>
+        <h2>Posts</h2>
         {% for post in object.post_set.all %}
-<b><a href="{% url "posts:createcomment" pk=post.id %}">{{ post.title}}</a></b>
-Likes: {{ post.like_set.count}}
+<h4><b><a href="{% url "posts:createcomment" pk=post.id %}">{{ post.title}}</a></b>
+    Likes: {{ post.like_set.count}}</h4>
 
 {% if post.author == user %}
- <a href="{% url "posts:editpost" pk=post.id %}"> Edit</a>
+ <a class="btn btn-default" href="{% url "posts:editpost" pk=post.id %}"> Edit</a>
 {% endif %}
-<br>
+
 
     {% endfor%}
+
+    </div>
+
+
+</div>
+
 
 
 {% endblock %}

@@ -3,27 +3,40 @@
 {% block content %}
 
 <h3>Blog: <a href="{% url "posts:oneblog" pk=post.blog.id %}">{{ post.blog.title }}</a></h3> <br>
-Likes: {{post.like_set.count}}
-<h4>Post title: {{ post.title }}</h4> <br>
-<hr>
-{{ post.text }}
-<hr>
-<br>
-<br>
-<br>
-Comments: {{ post.comment_set.count}}<br>
-<hr>
+
+
+<div class="panel panel-primary">
+     <div class="panel-heading">
+         <h4><header> {{ post.title }}</header></h4>
+     </div>
+    <div class="panel-body"><article>
+
+        {{ post.text }}</article></div>
+    <div class="panel-footer">Likes: {{post.like_set.count}} <br>Comments: {{ post.comment_set.count}}</div>
+
+</div>
+
+<div class="panel-group">
     {% for com in post.comment_set.all%}
-<div>{{ com.text }}</div> <br><hr>
-    {% endfor%}
+<div class="panel panel-default">
+    {{ com.text }}
+</div>     {% endfor%}
+</div>
 
-<form method="post" action="{% url "posts:createcomment" pk=post.blog.id %}">
+
+<div class="row">
+    <div class="col-xs-12  col-sm-8 col-md-4 col-lg-4">
+{% if not user.is_anonymous %}
+<form role="form" method="post" action="{% url "posts:createcomment" pk=post.blog.id %}">
 {% csrf_token %}
-{% render_field form.text rows="20" %}
-<br>
+        <div class="form-group">{{ form.text|add_class:"form-control" }}</div>
 
-<input type="submit">
+<input class="btn btn-default" type="submit">
 </form>
+{% endif %}
+
+                    </div>
+</div>
 {% endblock %}
 
 
