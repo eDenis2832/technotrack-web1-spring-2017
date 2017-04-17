@@ -28,6 +28,7 @@ $(document).ready(
             );
         }
 
+        $(".commentsdiv").load("comments");
         if ($(".commentsdiv").size() != 0) {
             window.setInterval(
                 function() {
