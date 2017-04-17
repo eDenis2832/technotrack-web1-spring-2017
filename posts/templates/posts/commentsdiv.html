@@ -1,0 +1,6 @@
+<div class="panel-group">
+    {% for com in post.comment_set.all%}
+<div class="panel panel-default">
+    {{ com.text }}
+</div>     {% endfor%}
+</div>

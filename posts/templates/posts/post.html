@@ -12,16 +12,22 @@
     <div class="panel-body"><article>
 
         {{ post.text }}</article></div>
-    <div class="panel-footer">Likes: {{post.like_set.count}} <br>Comments: {{ post.comment_set.count}}</div>
+    <div class="panel-footer">Likes: <div class="likescount">{{post.like_set.count}}</div> <br>Comments: {{ post.comment_set.count}}
+
+        {% if not liked %}
+    <input type="button" value="Like" class="btn btn-primary likebutton">
+        {% endif %}
+
+    </div>
+
 
 </div>
 
-<div class="panel-group">
-    {% for com in post.comment_set.all%}
-<div class="panel panel-default">
-    {{ com.text }}
-</div>     {% endfor%}
+
+<div class="commentsdiv">
+
 </div>
+
 
 
 <div class="row">
@@ -37,6 +43,8 @@
 
                     </div>
 </div>
+
+
 {% endblock %}
 
 

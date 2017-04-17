@@ -1,0 +1,17 @@
+
+{% load widget_tweaks %}
+
+<div class="row" xmlns="http://www.w3.org/1999/html">
+    <div class="col-xs-12  col-sm-8 col-md-4 col-lg-4">
+<form class="ajax_add_post_form" role="form" method="post" action="{% url "posts:addpost" %}">
+{% csrf_token %}
+
+        <div class="form-group"><label for="id_title">Title</label>{{ form.title|add_class:"form-control" }}</div>
+        <div class="form-group"><label for="id_blog">Blog</label>{{ form.blog|add_class:"form-control" }}</div>
+        <div class="form-group"><label for="id_text">Text</label>{{ form.text|add_class:"form-control" }}</div>
+
+
+<input type="submit" class="btn btn-defalut">
+    </form>
+    </div>
+</div>

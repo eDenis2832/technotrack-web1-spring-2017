@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Blog, Post
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+from .models import Blog, Post, Like
 from django.views.generic import ListView, DetailView, UpdateView, CreateView
 from comments.models import Comment
 from django.urls import reverse_lazy, reverse
@@ -36,7 +36,6 @@ class CreateBlog(CreateView):
         form.instance.rate = 0
         return super(CreateBlog, self).form_valid(form)
 
-
 class UpdateBlog(UpdateView):
     template_name = 'posts/editblog.html'
     model = Blog
@@ -54,6 +53,7 @@ class UpdateBlog(UpdateView):
         return super(UpdateBlog, self).get_queryset().filter(author=self.request.user)
 
 
+
 class CreatePost(CreateView):
     template_name = 'posts/addpost.html'
     model = Post
@@ -68,6 +68,25 @@ class CreatePost(CreateView):
 
     def get_form(self, form_class=None):
         form = super(CreatePost, self).get_form()
+        form.fields["blog"].queryset = form.fields["blog"].queryset.filter(author=self.request.user)
+        return form
+
+#by modal window
+class AddPost(CreateView):
+    template_name = 'posts/add_post.html'
+    model = Post
+    fields = ('title', 'blog', 'text')
+
+    def get_success_url(self):
+        return reverse_lazy('posts:allblogs')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        resp =  super(AddPost, self).form_valid(form)
+        return "OK"
+
+    def get_form(self, form_class=None):
+        form = super(AddPost, self).get_form()
         form.fields["blog"].queryset = form.fields["blog"].queryset.filter(author=self.request.user)
         return form
 
@@ -107,6 +126,13 @@ class CreateComment(CreateView):
     def get_context_data(self, **kwargs):
         context = super(CreateComment, self).get_context_data(**kwargs)
         context['post'] = self.postob
+
+        if self.postob.like_set.filter(author=self.request.user):
+            context["liked"] = True
+        else:
+            context["liked"] = False
+
+
         return context
 
     def form_valid(self, form):
@@ -142,6 +168,36 @@ class BlogView(DetailView):
     queryset = Blog.objects.all()
     template_name = "posts/blog.html"
 
+
+class PostCommentsView(DetailView):
+    queryset = Post.objects.all()
+    template_name = "posts/commentsdiv.html"
+
+#Likes increment
+def likepost(request, pk=None):
+    post = get_object_or_404(Post, id=pk)
+    if request.user.is_authenticated:
+        if (Like.objects.filter(post=post,author=request.user).count() == 0):
+            like = Like(post=post, author=request.user)
+            like.save()
+    return HttpResponse(Like.objects.filter(post=post).count())
+
+def get_likes_count(request, pk=None):
+    post = get_object_or_404(Post, id=pk)
+    return HttpResponse(Like.objects.filter(post=post).count())
+
+
+
+'''
+    if request.method == 'GET':
+        form = BlogForm(instance=blog)
+    elif request.method == 'POST':
+        form = BlogForm(request.POST, instance=blog)
+        if form.is_valid():
+            form.save()
+            return redirect('/blogs/')
+    return render(request, 'posts/editblog.html', {'form': form})
+'''
 
 '''
 def createblog(request):
