@@ -43,12 +43,13 @@ $(document).ready(
         $(".catselect").chosen();
 
         $(document).on("submit", ".ajax_add_post_form", function() {
-            alert("gggg");
             $.ajax({url: $(this).attr('action'), method: 'POST', data: $('form').serialize(),
             success: function(data, textStatus, jqXHR) {
-                alert(data);
-                alert(textStatus);
-                alert(jqXHR);
+                if (data == "OK") {
+                    location.reload();
+                } else {
+                    $(".for_creating_post_form").html(data);
+                }
             }});
             return false;
         });

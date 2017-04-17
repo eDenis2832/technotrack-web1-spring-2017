@@ -82,13 +82,15 @@ class AddPost(CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        resp =  super(AddPost, self).form_valid(form)
-        return "OK"
+        resp = super(AddPost, self).form_valid(form)
+        return HttpResponse("OK")
 
     def get_form(self, form_class=None):
         form = super(AddPost, self).get_form()
         form.fields["blog"].queryset = form.fields["blog"].queryset.filter(author=self.request.user)
         return form
+
+
 
 
 class UpdatePost(UpdateView):
