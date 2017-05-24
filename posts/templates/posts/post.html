@@ -33,7 +33,7 @@
 <div class="row">
     <div class="col-xs-12  col-sm-8 col-md-4 col-lg-4">
 {% if not user.is_anonymous %}
-<form role="form" method="post" action="{% url "posts:createcomment" pk=post.blog.id %}">
+<form role="form" method="post" action="{% url "posts:createcomment" pk=post.id %}">
 {% csrf_token %}
         <div class="form-group">{{ form.text|add_class:"form-control" }}</div>
 

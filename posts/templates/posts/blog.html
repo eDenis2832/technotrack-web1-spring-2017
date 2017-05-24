@@ -24,7 +24,7 @@
         <h2>Posts</h2>
         {% for post in object.post_set.all %}
 <h4><b><a href="{% url "posts:createcomment" pk=post.id %}">{{ post.title}}</a></b>
-    Likes: {{ post.like_set.count}}</h4>
+    Likes:  {{ post.like_set.count}}</h4>
 
 {% if post.author == user %}
  <a class="btn btn-default" href="{% url "posts:editpost" pk=post.id %}"> Edit</a>

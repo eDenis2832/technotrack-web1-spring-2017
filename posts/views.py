@@ -118,7 +118,7 @@ class CreateComment(CreateView):
     pk = int
 
     def get_success_url(self):
-        return reverse('posts:createcomment', kwargs={'pk': self.pk})
+        return reverse('posts:createcomment', kwargs={'pk': self.object.post_id})
 
     def dispatch(self, request, *args, **kwargs):
         self.postob = get_object_or_404(Post, id=kwargs['pk'])
@@ -178,7 +178,7 @@ class PostCommentsView(DetailView):
 #Likes increment
 def likepost(request, pk=None):
     post = get_object_or_404(Post, id=pk)
-    if request.user.is_authenticated:
+    if request.user.is_authenticated():
         if (Like.objects.filter(post=post,author=request.user).count() == 0):
             like = Like(post=post, author=request.user)
             like.save()
